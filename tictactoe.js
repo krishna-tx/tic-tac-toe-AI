@@ -1,7 +1,7 @@
 class TicTacToePlayer {
-    constructor() {
-        this.myPiece = 'X';
-        this.OppPiece = 'O';
+    constructor(myPiece, oppPiece) {
+        this.myPiece = myPiece;
+        this.oppPiece = oppPiece;
     }
 
     getNextStates(currState, piece) {
@@ -92,7 +92,7 @@ class TicTacToePlayer {
             return [gameValue, null];
         }
 
-        let nextStates = this.getNextStates(currState, this.OppPiece);
+        let nextStates = this.getNextStates(currState, this.oppPiece);
         let beta = Number.POSITIVE_INFINITY;
         let maxVal, maxNextState, minNextState;;
         for(let i = 0; i < nextStates.length; i++) {
@@ -124,9 +124,31 @@ class TicTacToePlayer {
     }
 }
 
-var currPlayer = 'X';
-var boardMatrix = []
-var player = new TicTacToePlayer();
+var currPlayer, myPiece, oppPiece;
+var boardMatrix = [];
+var player;
+
+function selectedPlayerX() {
+    console.log("Player X chosen");
+    myPiece = 'O';
+    oppPiece = 'X';
+    let buttonX = document.getElementById("X-button");
+    let buttonO = document.getElementById("O-button");
+    buttonX.disabled = true;
+    buttonO.disabled = true;
+    startGame();
+}
+
+function selectedPlayerO() {
+    console.log("Player O chosen");
+    myPiece = 'X';
+    oppPiece = 'O';
+    let buttonX = document.getElementById("X-button");
+    let buttonO = document.getElementById("O-button");
+    buttonX.disabled = true;
+    buttonO.disabled = true;
+    startGame();
+}
 
 window.onload = function() {
     setup();
@@ -139,15 +161,28 @@ function setup() {
         for(let j = 0; j < 3; j++) {
             arr.push('');
             let cell = document.createElement("input");
-            cell.readOnly = true;
             cell.id = i + '-' + j;
             cell.classList.add("cell");
-            cell.addEventListener("click", placeMove);
+            cell.readOnly = true;
+            cell.value = ''
+            cell.style.color = "black";
             board.append(cell);
         }
         boardMatrix.push(arr);
     }
-    startGame();
+}
+
+function startGame() {
+    currPlayer = myPiece;
+
+    // allow cells to be clicked
+    let cells = document.getElementsByClassName("cell");
+    for(let i = 0; i < cells.length; i++) {
+        cells[i].addEventListener("click", placeMove);
+    }
+
+    player = new TicTacToePlayer(myPiece, oppPiece);
+    player.makeMove(boardMatrix);
 }
 
 function placeMove() {
@@ -163,10 +198,6 @@ function placeMove() {
     }
     this.removeEventListener("click", placeMove);
     checkState();
-}
-
-function startGame() {
-    player.makeMove(boardMatrix);
 }
 
 function checkState() {
@@ -246,7 +277,7 @@ function checkState() {
     for(let i = 0; i < 3; i++) {
         for(let j = 0; j < 3; j++) {
             if(boardMatrix[i][j] == '') { // empty cell exists
-                if(currPlayer == 'X') { player.makeMove(boardMatrix); }
+                if(currPlayer == myPiece) { player.makeMove(boardMatrix); }
                 return;
             }
         }
@@ -264,7 +295,10 @@ function endGame() {
 }
 
 function restartGame() {
-    currPlayer = 'X';
+    let buttonX = document.getElementById("X-button");
+    let buttonO = document.getElementById("O-button");
+    buttonX.disabled = false;
+    buttonO.disabled = false;
 
     for(let i = 0; i < 3; i++) {
         for(let j = 0; j < 3; j++) {
@@ -272,10 +306,8 @@ function restartGame() {
             let cell = document.getElementById(i + "-" + j);
             cell.value = '';
             cell.style.color = "black";
-            cell.addEventListener("click", placeMove);
         }
     }
-    startGame();
 }
 
 
