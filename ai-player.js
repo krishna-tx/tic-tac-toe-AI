@@ -25,8 +25,8 @@ class TicTacToePlayer {
         for(let i = 0; i < 3; i++) {
             let val = currState[i][0];
             if(val != '' && val == currState[i][1] && val == currState[i][2]) {
-                if(val == this.myPiece) { return 10; } // Winning state
-                return -10; // Losing state
+                if(val == this.myPiece) { return 1; } // Winning state
+                return -1; // Losing state
             }
         }
 
@@ -34,30 +34,29 @@ class TicTacToePlayer {
         for(let j = 0; j < 3; j++) {
             let val = currState[0][j];
             if(val != '' && val == currState[1][j] && val == currState[2][j]) {
-                if(val == this.myPiece) { return 10; } // Winning state
-                return -10; // Losing state
+                if(val == this.myPiece) { return 1; } // Winning state
+                return -1; // Losing state
             }
         }
 
         // check \ diagonal
         let val = currState[0][0];
         if(val != '' && val == currState[1][1] && val == currState[2][2]) {
-            if(val == this.myPiece) { return 10; } // Winning state
-            return -10; // Losing state
+            if(val == this.myPiece) { return 1; } // Winning state
+            return -1; // Losing state
         }
 
         // check / diagonal
         val = currState[0][2];
         if(val != '' && val == currState[1][1] && val == currState[2][0]) {
-            if(val == this.myPiece) { return 10; } // Winning state
-            return -10; // Losing state
+            if(val == this.myPiece) { return 1; } // Winning state
+            return -1; // Losing state
         }
 
-        // check for draw
         for(let i = 0; i < 3; i++) {
             for(let j = 0; j < 3; j++) {
                 if(currState[i][j] == '') { // empty cell exists
-                    return -1; // state is not a terminal state
+                    return 2; // state is not a terminal state
                 }
             }
         }
@@ -66,9 +65,8 @@ class TicTacToePlayer {
     }
 
     maxValue(currState) {
-        // check if state is a terminal state (game over)
         let gameValue = this.gameValue(currState)
-        if(gameValue !== -1) {
+        if(gameValue !== 2) {
             return [gameValue, null];
         }
 
@@ -86,9 +84,8 @@ class TicTacToePlayer {
     }
 
     minValue(currState) {
-        // check if state is a terminal state (game over)
         let gameValue = this.gameValue(currState)
-        if(gameValue !== -1) {
+        if(gameValue !== 2) {
             return [gameValue, null];
         }
 
