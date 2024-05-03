@@ -66,7 +66,7 @@ class TicTacToePlayer {
 
     maxValue(currState) {
         let gameValue = this.gameValue(currState)
-        if(gameValue !== 2) {
+        if(gameValue != 2) {
             return [gameValue, null];
         }
 
@@ -85,7 +85,7 @@ class TicTacToePlayer {
 
     minValue(currState) {
         let gameValue = this.gameValue(currState)
-        if(gameValue !== 2) {
+        if(gameValue != 2) {
             return [gameValue, null];
         }
 
